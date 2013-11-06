@@ -9,6 +9,7 @@ WorkingDirectory=/home/elspeth/sites/DOMAIN
 Environment=DJANGO_DEBUG_FALSE=y
 Environment=DJANGO_SECRET_KEY=SEKRIT
 Environment=SITENAME=DOMAIN
+Environment=EMAIL_PASSWORD=EMAILPWD
 
 ExecStart=/home/elspeth/sites/DOMAIN/virtualenv/bin/gunicorn \
     --bind unix:/tmp/DOMAIN.socket \
