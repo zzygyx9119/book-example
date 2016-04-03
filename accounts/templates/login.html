@@ -1,0 +1,9 @@
+<html>
+  <h1>Log in using email access code</h1>
+  <p>Check your email for a code  and enter it here</p>
+  <form method="POST" action="{% url 'login' %}">
+    <input name="uid" type="text" />
+    <input type="submit" value="Log in" />
+    {% csrf_token %}
+  </form>
+</htmL>

@@ -1,28 +1,16 @@
-import requests
 import sys
-from accounts.models import ListUser
+from accounts.models import ListUser, Token
 
-class PersonaAuthenticationBackend(object):
+class PasswordlessAuthenticationBackend(object):
 
-    def authenticate(self, assertion):
-        # Send the assertion to Mozilla's verifier service.
-        data = {'assertion': assertion, 'audience': 'localhost'}
-        print('sending to mozilla', data, file=sys.stderr)
-        resp = requests.post('https://verifier.login.persona.org/verify', data=data)
-        print('got', resp.content, file=sys.stderr)
-
-        # Did the verifier respond?
-        if resp.ok:
-            # Parse the response
-            verification_data = resp.json()
-
-            # Check if the assertion was valid
-            if verification_data['status'] == 'okay':
-                email = verification_data['email']
-                try:
-                    return self.get_user(email)
-                except ListUser.DoesNotExist:
-                    return ListUser.objects.create(email=email)
+    def authenticate(self, uid):
+        try:
+            token = Token.objects.get(uid=uid)
+            return self.get_user(token.email)
+        except Token.DoesNotExist:
+            return None
+        except ListUser.DoesNotExist:
+            return ListUser.objects.create(email=token.email)
 
 
     def get_user(self, email):

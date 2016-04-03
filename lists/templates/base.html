@@ -16,11 +16,13 @@
     <div class="navbar">
         {% if user.email %}
             <p>Logged in as {{ user.email}}</p>
-            <p><a id="logout" href="{% url 'logout' %}">Sign out</a></p>
+            <p><a id="id_logout" href="{% url 'logout' %}">Log out</a></p>
         {% else %}
-            <a href="#" id="login">Sign in</a>
+          <form method="POST" action ="{% url 'send_login_email' %}">
+            Enter email to log in: <input name="email" type="text" />
+            {% csrf_token %}
+          </form>
         {% endif %}
-        <p>User: {{user}}</p>
     </div>
 
     <div class="row">

@@ -1,5 +1,12 @@
+import os
+import uuid
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+
+class Token(models.Model):
+    email = models.EmailField()
+    uid = models.CharField(max_length=36, default=uuid.uuid4)
+
 
 class ListUserManager(BaseUserManager):
 
