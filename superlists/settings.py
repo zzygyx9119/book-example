@@ -36,13 +36,16 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'social.apps.django_app.default',
+
     'lists',
     "accounts",
 )
 
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
-    'accounts.authentication.PersonaAuthenticationBackend',
+    'social.backends.open_id.OpenIdAuth',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,3 +110,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+
+
+SOCIAL_AUTH_AUTHENTICATION_BACKENDS = AUTHENTICATION_BACKENDS
+SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
+
