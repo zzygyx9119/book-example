@@ -3,15 +3,62 @@
 {% block header_text %}Your To-Do list{% endblock %}
 
 {% block list_form %}
-  <form method="POST" action="{% url 'view_list' list.id %}">
-    {% include 'list_form_include.html' %}
-  </form>
+    <form id="id_ajax_form">
+      {% include 'list_form_include.html' %}
+    </form>
 {% endblock %}
 
 {% block table %}
     <table id="id_list_table" class="table">
-        {% for item in list.item_set.all %}
-            <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
-        {% endfor %}
     </table>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+
+jQuery(document).ready(function ($) {
+
+  var updateListItems = function () {
+    var rows = ''
+    $.get("{% url 'list_items' list.id %}").then(function (response) {
+      console.log('updating');
+      for (var i=0; i<response.length; i++) {
+        var item = response[i];
+        rows += '<tr><td>' + i + ': ' + item.text + '</td></tr>'
+      }
+      $('#id_list_table').html(rows);
+    });
+  }
+
+  updateListItems();
+
+  $('#id_ajax_form').on('submit', function (event) {
+    event.preventDefault();
+    var itemText = $('#id_text').val();
+    var token = "{{ csrf_token }}";
+    console.log('posting');
+    $.post(
+        "{% url 'add_to_list' list.id %}",
+        {
+          text: itemText,
+          csrfmiddlewaretoken: token
+        }
+    )
+    .success(function (response) {
+      if (response.status == 'OK') {
+        updateListItems();
+      } else {
+        console.log('error');
+        console.log(response);
+      }
+    })
+    .error(function (response) {
+      console.log(response);
+    });
+  });
+});
+
+
+</script>
 {% endblock %}
