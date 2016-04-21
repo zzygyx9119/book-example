@@ -25,7 +25,7 @@ jQuery(document).ready(function ($) {
       console.log('updating');
       for (var i=0; i<response.length; i++) {
         var item = response[i];
-        rows += '<tr><td>' + i + ': ' + item.text + '</td></tr>'
+        rows += '<tr><td>' + (i + 1) + ': ' + item.text + '</td></tr>'
       }
       $('#id_list_table').html(rows);
     });
