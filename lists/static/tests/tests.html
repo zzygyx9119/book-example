@@ -37,7 +37,7 @@ test("errors not be hidden unless there is a keypress", function () {
 
 
 test("should get items by ajax and fill in lists table", function () {
-  var url = '/getitems/';
+  var url = '/listitemsapi/';
 
   var server = sinon.fakeServer.create();
   var response = [
@@ -50,7 +50,7 @@ test("should get items by ajax and fill in lists table", function () {
   ];
   server.respondWith('GET', url, response);
   window.Superlists.Lists.initialize({
-    getItemsUrl: url
+    listItemsUrl: url
   });
 
 

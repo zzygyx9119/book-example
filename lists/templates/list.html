@@ -14,7 +14,7 @@
     /*global $, Superlists */
     $(document).ready(function () {
       Superlists.Lists.initialize({
-        getItemsUrl: "{% url 'api_list' list.id %}"
+        listItemsUrl: "{% url 'api_list' list.id %}"
       });
     });
 </script>

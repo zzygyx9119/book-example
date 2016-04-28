@@ -6,7 +6,7 @@ var initialize = function(options) {
     });
 
     if (options) {
-        $.get(options.getItemsUrl).then(function (response) {
+        $.get(options.listItemsUrl).then(function (response) {
             var rows = '';
             for (var i=0; i<response.length; i++) {
                 var item = response[i];
