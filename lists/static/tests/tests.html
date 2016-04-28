@@ -59,7 +59,6 @@ test("should get items by ajax and fill in lists table", function () {
   var rows = $('#id_list_table tr');
   equal(rows.length, 2);
   var row1 = $('#id_list_table tr:first-child td');
-  console.log(row1);
   equal(row1.text(), '1: item 1 text');
   var row2 = $('#id_list_table tr:last-child td');
   equal(row2.text(), '2: item 2 text');

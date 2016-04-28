@@ -10,11 +10,9 @@ var initialize = function(options) {
             var rows = '';
             for (var i=0; i<response.length; i++) {
                 var item = response[i];
-                console.log(item);
                 rows += '\n<tr><td>' + (i+1) + ': ' + item.text + '</td></tr>';
             }
             $('#id_list_table').html(rows);
-            console.log($('#id_list_table').html());
         });
     }
 

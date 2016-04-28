@@ -4,3 +4,13 @@
 
 {% block form_action %}{% url 'new_list' %}{% endblock %}
 
+
+{% block extra_scripts %}
+<script>
+    /*global $, Superlists */
+    $(document).ready(function () {
+        Superlists.Lists.initialize();
+    });
+</script>
+{% endblock extra_scripts %}
+
