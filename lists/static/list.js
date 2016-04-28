@@ -15,18 +15,18 @@ var initialize = function(options) {
         });
     };
 
-    var form = $('#id_item_form');
-    form.on('submit', function(event) {
-        event.preventDefault();
-        $.post(options.listItemsUrl, {
-            'text': form.find('input[name="text"]').val(),
-            'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
-        }).success(function () {
-            getItems();
+    if (options && options.listItemsUrl) {
+        var form = $('#id_item_form');
+        form.on('submit', function(event) {
+            event.preventDefault();
+            $.post(options.listItemsUrl, {
+                'text': form.find('input[name="text"]').val(),
+                'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
+            }).success(function () {
+                getItems();
+            });
         });
-    });
 
-    if (options) {
         getItems();
     }
 
