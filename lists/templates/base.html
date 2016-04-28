@@ -69,6 +69,8 @@
 <script>
     /*global $, Superlists, navigator */
     $(document).ready(function () {
+        Superlists.Lists.initialize();
+
         var user = "{{ user.email }}" || null;
         var token = "{{ csrf_token }}";
         var urls = {

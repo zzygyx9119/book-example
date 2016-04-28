@@ -19,8 +19,7 @@ var initialize = function (navigator, user, token, urls) {
     });
 };
 
-window.Superlists = {
-    Accounts: {
-        initialize: initialize
-    }
+window.Superlists = window.Superlists || {};
+window.Superlists.Accounts = window.Superlists.Accounts || {
+    initialize: initialize
 };

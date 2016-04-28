@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
     <title>Javascript tests</title>
     <link rel="stylesheet" href="../../../superlists/static/tests/qunit.css">
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="qunit"></div>
     <div id="qunit-fixture">
-        <form>
-            <input name="text" />
-            <div class="has-error">Error text</div>
-        </form>
+      <form>
+        <input name="text" />
+        <div class="has-error">Error text</div>
+      </form>
     </div>
 
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="../../../superlists/static/tests/qunit.js"></script>
+    <script src="../../../superlists/static/tests/sinon.js"></script>
     <script src="../list.js"></script>
     <script>
 /*global $, test, equal */
 
 test("errors should be hidden on keypress", function () {
-    $('input').trigger('keypress');
-    equal($('.has-error').is(':visible'), false); 
+  window.Superlists.Lists.initialize();
+  $('input').trigger('keypress');
+  equal($('.has-error').is(':visible'), false); 
 });
 
 test("errors not be hidden unless there is a keypress", function () {
-    equal($('.has-error').is(':visible'), true);
+  window.Superlists.Lists.initialize();
+  equal($('.has-error').is(':visible'), true);
+});
+
+test("new", function () {
+  equal(true, false);
 });
 
     </script>
 
-</body>
+  </body>
 </html>
