@@ -13,6 +13,8 @@
         <input name="text" />
         <div class="has-error">Error text</div>
       </form>
+      <table id="id_list_table">
+      </table>
     </div>
 
     <script src="http://code.jquery.com/jquery.min.js"></script>
@@ -25,7 +27,7 @@
 test("errors should be hidden on keypress", function () {
   window.Superlists.Lists.initialize();
   $('input').trigger('keypress');
-  equal($('.has-error').is(':visible'), false); 
+  equal($('.has-error').is(':visible'), false);
 });
 
 test("errors not be hidden unless there is a keypress", function () {
@@ -33,8 +35,34 @@ test("errors not be hidden unless there is a keypress", function () {
   equal($('.has-error').is(':visible'), true);
 });
 
-test("new", function () {
-  equal(true, false);
+
+test("should get items by ajax and fill in lists table", function () {
+  var url = '/getitems/';
+
+  var server = sinon.fakeServer.create();
+  var response = [
+    200,
+    {"Content-Type": "application/json"},
+    JSON.stringify([
+        {'id': 101, 'text': 'item 1 text'},
+        {'id': 102, 'text': 'item 2 text'},
+    ]),
+  ];
+  server.respondWith('GET', url, response);
+  window.Superlists.Lists.initialize({
+    getItemsUrl: url
+  });
+
+
+  server.respond();
+
+  var rows = $('#id_list_table tr');
+  equal(rows.length, 2);
+  var row1 = $('#id_list_table tr:first-child td');
+  console.log(row1);
+  equal(row1.text(), '1: item 1 text');
+  var row2 = $('#id_list_table tr:last-child td');
+  equal(row2.text(), '2: item 2 text');
 });
 
     </script>
