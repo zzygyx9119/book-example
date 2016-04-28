@@ -9,8 +9,9 @@
   <body>
     <div id="qunit"></div>
     <div id="qunit-fixture">
-      <form>
+      <form id="id_item_form">
         <input name="text" />
+        <input type="hidden" name="csrfmiddlewaretoken" value="tokey" />
         <div class="has-error">Error text</div>
       </form>
       <table id="id_list_table">
@@ -62,6 +63,36 @@ test("should get items by ajax and fill in lists table", function () {
   equal(row1.text(), '1: item 1 text');
   var row2 = $('#id_list_table tr:last-child td');
   equal(row2.text(), '2: item 2 text');
+});
+
+
+test("should intercept form submit and do ajax post", function () {
+  var url = '/listitemsapi/';
+  window.Superlists.Lists.initialize({
+    listItemsUrl: url
+  });
+
+  var server = sinon.fakeServer.create();
+  var response = [
+    201,
+    {"Content-Type": "application/json"},
+    JSON.stringify({'id': 103}),
+  ];
+  server.respondWith('POST', url, response);
+
+  $('#id_item_form input[name="text"]').val('user input');
+  $('#id_item_form input[name="csrfmiddlewaretoken"]').val('tokeney');
+  $('#id_item_form').submit();
+  server.respond();
+
+  equal(server.requests.length, 1);
+  var request = server.requests[0];
+  console.log(request.requestBody);
+  equal(request.requestBody, $.param({
+    'text': 'user input',
+    'csrfmiddlewaretoken': 'tokeney'
+  }));
+
 });
 
     </script>

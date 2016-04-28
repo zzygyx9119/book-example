@@ -4,6 +4,14 @@ var initialize = function(options) {
     $('input').on('keypress', function () {
         $('.has-error').hide();
     });
+    var form = $('#id_item_form');
+    form.on('submit', function(event) {
+        event.preventDefault();
+        $.post(options.listItemsUrl, {
+            'text': form.find('input[name="text"]').val(),
+            'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
+        });
+    });
 
     if (options) {
         $.get(options.listItemsUrl).then(function (response) {
