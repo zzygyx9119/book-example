@@ -92,7 +92,6 @@ test("should intercept form submit and do ajax post", function () {
 
   ok(server.requests.length > 0);
   var request = server.requests[0];
-  console.log(request.requestBody);
   equal(request.requestBody, $.param({
     'text': 'user input',
     'csrfmiddlewaretoken': 'tokeney'
@@ -129,6 +128,25 @@ test("should not intercept form submit if no api url passed in", function () {
   equal($._data($('#id_item_form')[0], 'events'), undefined);
 });
 
+test("should display errors on post failure", function () {
+  var url = '/listitemsapi/';
+  window.Superlists.Lists.initialize({
+    listItemsUrl: url
+  });
+  var server = sinon.fakeServer.create();
+  server.respondWith('POST', url, [
+    400,
+    {"Content-Type": "application/json"},
+    JSON.stringify({'error': 'something is amiss'})
+  ]);
+
+  console.log('now');
+  $('#id_item_form').submit();
+  server.respond(); // post
+
+  equal($('.has-error').text(), 'something is amiss');
+
+});
 
     </script>
 
