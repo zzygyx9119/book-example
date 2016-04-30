@@ -37,32 +37,43 @@ test("errors not be hidden unless there is a keypress", function () {
 });
 
 
-test("should get items by ajax and fill in lists table", function () {
-  var url = '/listitemsapi/';
+var getResponse = [
+  200,
+{"Content-Type": "application/json"},
+  JSON.stringify([
+      {'id': 101, 'text': 'item 1 text'},
+      {'id': 102, 'text': 'item 2 text'},
+  ]),
+];
 
-  var server = sinon.fakeServer.create();
-  var response = [
-    200,
-    {"Content-Type": "application/json"},
-    JSON.stringify([
-        {'id': 101, 'text': 'item 1 text'},
-        {'id': 102, 'text': 'item 2 text'},
-    ]),
-  ];
-  server.respondWith('GET', url, response);
-  window.Superlists.Lists.initialize({
-    listItemsUrl: url
-  });
+var postResponse = [
+  201,
+  {"Content-Type": "application/json"},
+  JSON.stringify({'id': 103}),
+];
 
 
-  server.respond();
-
+var checkTable = function () {
   var rows = $('#id_list_table tr');
   equal(rows.length, 2);
   var row1 = $('#id_list_table tr:first-child td');
   equal(row1.text(), '1: item 1 text');
   var row2 = $('#id_list_table tr:last-child td');
   equal(row2.text(), '2: item 2 text');
+}
+
+
+test("should get items by ajax and fill in lists table", function () {
+  var url = '/listitemsapi/';
+  var server = sinon.fakeServer.create();
+  server.respondWith('GET', url, getResponse);
+  window.Superlists.Lists.initialize({
+    listItemsUrl: url
+  });
+
+  server.respond();
+
+  checkTable();
 });
 
 
@@ -71,14 +82,8 @@ test("should intercept form submit and do ajax post", function () {
   window.Superlists.Lists.initialize({
     listItemsUrl: url
   });
-
   var server = sinon.fakeServer.create();
-  var response = [
-    201,
-    {"Content-Type": "application/json"},
-    JSON.stringify({'id': 103}),
-  ];
-  server.respondWith('POST', url, response);
+  server.respondWith('POST', url, postResponse);
 
   $('#id_item_form input[name="text"]').val('user input');
   $('#id_item_form input[name="csrfmiddlewaretoken"]').val('tokeney');
@@ -100,33 +105,23 @@ test("should repopulate items table after post", function () {
   window.Superlists.Lists.initialize({
     listItemsUrl: url
   });
-
   var server = sinon.fakeServer.create();
-  var postResponse = [
-    201,
-    {"Content-Type": "application/json"},
-    JSON.stringify({'id': 103}),
-  ];
-  server.respondWith('POST', url, postResponse);
-  var getResponse = [
-    200,
-    {"Content-Type": "application/json"},
-    JSON.stringify([
-        {'id': 101, 'text': 'item 1 text'},
-        {'id': 102, 'text': 'item 2 text'},
-    ]),
-  ];
   server.respondWith('GET', url, getResponse);
+  server.respondWith('POST', url, postResponse);
 
   $('#id_item_form input[name="text"]').val('user input');
   $('#id_item_form input[name="csrfmiddlewaretoken"]').val('tokeney');
   $('#id_item_form').submit();
-  server.respond();
-  server.respond();
+  server.respond(); // post
 
   equal(server.requests[0].method, 'POST');
   equal(server.requests.length, 2);
   equal(server.requests[1].method, 'GET');
+
+  server.respond(); // get
+
+  checkTable();
+
 });
 
 test("should not intercept form submit if no api url passed in", function () {

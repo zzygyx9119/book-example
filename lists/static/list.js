@@ -4,19 +4,22 @@ var initialize = function(options) {
     $('input').on('keypress', function () {
         $('.has-error').hide();
     });
-    var getItems = function () {
-        $.get(options.listItemsUrl).then(function (response) {
-            var rows = '';
-            for (var i=0; i<response.length; i++) {
-                var item = response[i];
-                rows += '\n<tr><td>' + (i+1) + ': ' + item.text + '</td></tr>';
-            }
-            $('#id_list_table').html(rows);
-        });
-    };
 
     if (options && options.listItemsUrl) {
+        console.log('options');
+        var getItems = function () {
+            $.get(options.listItemsUrl).then(function (response) {
+                var rows = '';
+                for (var i=0; i<response.length; i++) {
+                    var item = response[i];
+                    rows += '\n<tr><td>' + (i+1) + ': ' + item.text + '</td></tr>';
+                }
+                $('#id_list_table').html(rows);
+            });
+        };
+
         var form = $('#id_item_form');
+
         form.on('submit', function(event) {
             event.preventDefault();
             $.post(options.listItemsUrl, {
