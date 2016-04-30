@@ -64,6 +64,10 @@
 </div>
 <script src="/static/jquery/jquery.min.js"></script>
 <script src="/static/list.js"></script>
+
+{% block extra_scripts %}
+{% endblock extra_scripts %}
+
 <script src="https://login.persona.org/include.js"></script>
 <script src="/static/accounts.js"></script>
 <script>
@@ -81,8 +85,6 @@
     });
 </script>
 
-{% block extra_scripts %}
-{% endblock extra_scripts %}
 </body>
 
 </html>
