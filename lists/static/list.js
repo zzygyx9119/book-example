@@ -26,9 +26,10 @@ var initialize = function(options) {
                 'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
             }).success(function () {
                 getItems();
-            }).error(function (xhr, response, error) {
-                console.log(xhr.responseText);
-                $('.has-error').text(xhr.responseText.error);
+                $('.has-error').hide();
+            }).error(function (xhr) {
+                $('.has-error').show();
+                $('.has-error .help-block').text(JSON.parse(xhr.responseText).error);
             });
         });
 
