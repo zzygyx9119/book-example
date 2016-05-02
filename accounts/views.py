@@ -33,9 +33,10 @@ def login(request):
                 'noreply@superlists',
                 [email],
             )
+            messages.success(request, 'Email sent to {}'.format(email))
             return redirect('login')
 
-        user = authenticate(uid=request.POST.get('uid'))
+        user = authenticate(uid=request.POST.get('uid').strip())
         if user:
             auth_login(request, user)
             messages.success(request, 'Logged in as {}'.format(user.email))

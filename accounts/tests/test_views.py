@@ -48,6 +48,14 @@ class LoginViewTest(TestCase):
         self.assertEqual(self.client.session.get('_auth_user_id'), email)
 
 
+    def test_post_with_uid_with_extra_whitespace_works(self):
+        email = 'elspeth@example.com'
+        token = Token.objects.create(email=email)
+        uid = '  {} '.format(token.uid)
+        response = self.client.post(self.url, data=dict(uid=uid))
+        self.assertEqual(self.client.session.get('_auth_user_id'), email)
+
+
     def test_post_with_valid_uid_redirects_back_to_root(self):
         email = 'elspeth@example.com'
         token = Token.objects.create(email=email)
