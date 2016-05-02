@@ -34,6 +34,13 @@ def login(request):
             )
             return redirect('login')
 
+        user = authenticate(uid=request.POST.get('uid'))
+        if user:
+            auth_login(request, user)
+            return redirect('/')
+
+        return redirect('login')
+
 def foo():
 
     user = authenticate(uid=request.POST['uid'].strip())
