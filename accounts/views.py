@@ -2,6 +2,7 @@ import sys
 from accounts.models import Token
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.mail import send_mail
 
@@ -37,8 +38,10 @@ def login(request):
         user = authenticate(uid=request.POST.get('uid'))
         if user:
             auth_login(request, user)
+            messages.success(request, 'Logged in as {}'.format(user.email))
             return redirect('/')
 
+        messages.error(request, 'Invalid token')
         return redirect('login')
 
 def foo():

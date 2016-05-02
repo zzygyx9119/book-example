@@ -130,3 +130,5 @@ EMAIL_HOST_USER = 'obeythetestinggoat@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASSWORD')
 EMAIL_USE_TLS = True
 
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {message_constants.ERROR: 'danger'}

@@ -55,10 +55,23 @@ class LoginViewTest(TestCase):
         self.assertRedirects(response, '/')
 
 
+    def test_post_with_valid_uid_adds_success_message(self):
+        email = 'elspeth@example.com'
+        token = Token.objects.create(email=email)
+        response = self.client.post(self.url, data=dict(uid=token.uid))
+        self.assertIn('Logged in as ' + email, response.cookies['messages'].value)
+
+
     def test_post_with_invalid_uid_does_not_authenticate(self):
         email = 'elspeth@example.com'
         response = self.client.post(self.url, data=dict(uid='doesnotexist'))
         self.assertEqual(self.client.session.get('_auth_user_id'), None)
+
+
+    def test_post_with_invalid_uid_adds_failure_message(self):
+        email = 'elspeth@example.com'
+        response = self.client.post(self.url, data=dict(uid='doesnotexist'))
+        self.assertIn('Invalid token', response.cookies['messages'].value)
 
 
     def test_post_with_invalid_uid_redirects_to_login_page(self):

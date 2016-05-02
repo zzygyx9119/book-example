@@ -22,6 +22,18 @@
         {% endif %}
       </div>
 
+      {% if messages %}
+        <div class="row">
+          <div class="col-md-12">
+            {% for message in messages %}
+            <div class="alert alert-block alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
       {% block content %}
       {% endblock content %}
 
