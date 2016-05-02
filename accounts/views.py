@@ -22,6 +22,20 @@ def send_login_email(request):
 def login(request):
     if request.method == 'GET':
         return render(request, 'login.html')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            token = Token.objects.create(email=email)
+            send_mail(
+                'Your login code for superlists',
+                'Use this code to log in:\n\n {uid}\n'.format(uid=token.uid),
+                'noreply@superlists',
+                [email],
+            )
+            return redirect('login')
+
+def foo():
+
     user = authenticate(uid=request.POST['uid'].strip())
     if user is None:
         return render(request, 'login.html')
