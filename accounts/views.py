@@ -16,7 +16,7 @@ def login(request):
             token = Token.objects.create(email=email)
             send_mail(
                 'Your login code for superlists',
-                'Use this code to log in:\n\n {uid}\n'.format(uid=token.uid),
+                'Use this code to log in: {uid}\n'.format(uid=token.uid),
                 'noreply@superlists',
                 [email],
             )
