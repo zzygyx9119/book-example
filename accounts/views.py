@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.shortcuts import redirect, render
 from django.core.mail import send_mail
+from django.contrib import messages
 
 
 def send_login_email(request):
@@ -16,6 +17,7 @@ def send_login_email(request):
         'noreply@superlists',
         [email],
     )
+    messages.success(request, 'Check your email for a link to use to log in')
     return redirect('/')
 
 

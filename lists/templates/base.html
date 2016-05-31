@@ -25,6 +25,20 @@
         {% endif %}
     </div>
 
+  {% if messages %}
+    <div class="row">
+      <div class="col-md-8">
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="alert {% if message.level == 'success' %}alert-success{% else %}alert-warning{% endif %""">
+              {{ message }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3 jumbotron">
             <div class="text-center">
