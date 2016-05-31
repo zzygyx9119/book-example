@@ -16,7 +16,7 @@ def send_login_email(request):
         'noreply@superlists',
         [email],
     )
-    return redirect('login')
+    return redirect('/')
 
 
 def login(request):

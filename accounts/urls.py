@@ -1,7 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from accounts import views
 
-urlpatterns = patterns('',
-    url(r'^send_login_email$', 'accounts.views.send_login_email', name='send_login_email'),
-    url(r'^login$', 'accounts.views.login', name='login'),
-    url(r'^logout$', 'accounts.views.logout', name='logout'),
-)
+urlpatterns = [
+    url(r'^send_email$', views.send_login_email, name='send_login_email'),
+    url(r'^login/(.+)/$', views.login, name='login'),
+    url(r'^logout$', views.logout, name='logout'),
+]
