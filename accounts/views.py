@@ -11,9 +11,10 @@ def send_login_email(request):
     print('login view', file=sys.stderr)
     email = request.POST['email']
     token = Token.objects.create(email=email)
+    url = request.build_absolute_uri('/accounts/login/{token}/'.format(token=token.uid))
     send_mail(
-        'Your login code for superlists',
-        'Use this code to log into the site:\n\n {uid}\n'.format(uid=token.uid),
+        'Your login link for Superlists',
+        'Use this link to log into the site:\n\n {url}\n'.format(url=url),
         'noreply@superlists',
         [email],
     )
@@ -21,10 +22,8 @@ def send_login_email(request):
     return redirect('/')
 
 
-def login(request):
-    if request.method == 'GET':
-        return render(request, 'login.html')
-    user = authenticate(uid=request.POST['uid'].strip())
+def login(request, uid):
+    user = authenticate(uid=uid)
     if user is None:
         return render(request, 'login.html')
     auth_login(request, user)

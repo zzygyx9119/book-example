@@ -30,7 +30,8 @@
       <div class="col-md-8">
         <ul class="messages">
           {% for message in messages %}
-            <li class="alert {% if message.level == 'success' %}alert-success{% else %}alert-warning{% endif %""">
+            {{ message.level }}
+            <li class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}alert-success{% else %}alert-warning{% endif %}">
               {{ message }}
             </li>
           {% endfor %}
