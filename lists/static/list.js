@@ -32,7 +32,7 @@ window.Superlists.initialize = function (params) {
         window.Superlists.updateItems(params.listApiUrl);
       }).fail(function (xhr) {
         $('.has-error').show();
-        $('.has-error .help-block').text(xhr.responseJSON.error);
+        $('.has-error .help-block').text(xhr.responseJSON.text || xhr.responseJSON.non_field_errors);
       });
     });
   }
