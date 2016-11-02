@@ -27,7 +27,7 @@ class List(models.Model):
 
 
 class Item(models.Model):
-    text = models.TextField(default='')
+    text = models.TextField(default='', error_messages={'blank': 'foo'})
     list = models.ForeignKey(List, default=None)
 
     class Meta:
