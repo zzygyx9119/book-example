@@ -1,15 +1,16 @@
 import json
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 from lists.models import List, Item
 from lists.forms import DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR
 
 
 class ListAPITest(TestCase):
-    base_url = '/api/lists/{}/'
 
     def test_get_returns_json_200(self):
         list_ = List.objects.create()
-        response = self.client.get(self.base_url.format(list_.id))
+        url = reverse('api:list-detail', args=[list_.id])
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['content-type'], 'application/json')
 
@@ -20,7 +21,10 @@ class ListAPITest(TestCase):
         our_list = List.objects.create()
         item1 = Item.objects.create(list=our_list, text='item 1')
         item2 = Item.objects.create(list=our_list, text='item 2')
-        response = self.client.get(self.base_url.format(our_list.id))
+
+        url = reverse('api:list-detail', args=[our_list.id])
+        response = self.client.get(url)
+
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
             {'id': our_list.id, 'items': [
@@ -31,8 +35,7 @@ class ListAPITest(TestCase):
 
 
 class ItemsAPITest(TestCase):
-
-    base_url = '/api/items/'
+    base_url = reverse('api:item-list')
 
     def test_POSTing_a_new_item(self):
         list_ = List.objects.create()
