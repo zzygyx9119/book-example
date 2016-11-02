@@ -38,8 +38,11 @@
 {% block scripts %}
   <script>
 $(document).ready(function () {
-  var url = "/api/list/{{ list.id }}";
-  window.Superlists.initialize(url);
+  window.Superlists.initialize({
+    listApiUrl: "{% url 'api:list-detail' list.id %}",
+    itemsApiUrl: "{% url 'api:item-list' %}",
+    listId: {{ list.id }},
+  });
 });
   </script>
 {% endblock scripts %}
