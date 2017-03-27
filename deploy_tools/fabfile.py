@@ -45,3 +45,7 @@ def _create_dotenv_file_if_necessary():
 def _update_static_files():
     run('./virtualenv/bin/python manage.py collectstatic --noinput')
 
+
+def _update_database():
+    run('./virtualenv/bin/python manage.py migrate --noinput')
+
