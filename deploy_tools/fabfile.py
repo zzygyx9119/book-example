@@ -30,3 +30,14 @@ def _update_virtualenv():
         run(f'python3.6 -m venv virtualenv')
     run('./virtualenv/bin/pip install -r requirements.txt')
 
+
+def _create_dotenv_file_if_necessary():
+    if exists('.env'):
+        return
+    append('.env', 'DJANGO_DEBUG_FALSE=y')
+    append('.env', f'SITENAME={env.host}')
+    new_secret = ''.join(random.SystemRandom().choices(
+        'abcdefghijklmnopqrstuvwxyz0123456789', k=50
+    ))
+    append('.env', f'DJANGO_SECRET_KEY={new_secret}')
+
